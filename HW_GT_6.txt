@@ -1,0 +1,38 @@
+ 1. Опишите назначение данных операторов MongoDB:
+    $match - операция фильтрации (выборка)
+    $group - агрегация (группировка)
+    $sort - сортирует документы
+    $limit - ограничивает количество документов 
+    $multiply - умножение
+    $divide - деление
+    $addFields - добавить поле
+    $in - принадлежность к списку
+    $gt - больше чем
+    $lt - меньше чем
+
+
+
+2. Коротко опишите, как работает Aggregation Framework в MongoDB 
+и приведите пример запроса (на ваше усмотрение), а также опишите,
+что он делает.
+
+подведение итогов
+Collection -> $project -> $match -> $group -> $sort -> Result
+
+// DB tube
+// Coll videos
+// Дайте ответ на вопрос:
+// Какая продолжительность всех роликов (в часах)
+
+db.videos.aggregate([
+      {
+        '$group': {
+            '_id': null, 
+	    'total_duration_s': {'$sum': '$duration_secs'},
+          }
+      },
+      { 
+	'$addFields': {
+	      'total_sum_h': {$divide: ['$total_duration_s', 3600]}
+      }
+])
